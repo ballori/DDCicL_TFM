@@ -1,0 +1,51 @@
+dataset:
+  data_type: "ccphen" # Available options: "h5", "ccphen", or "npy"
+  
+  # Global signal dimensions
+  seq_length: 4096 # Available options: 4096 (for h5 and npy), 9216 (for ccohen)
+  fs: 16384
+  
+  # Case 1: Dimmelmeier dataset (npy)
+  train_path: "data/train_H_dim.npy"
+  test_path: "data/test_H_dim.npy"
+  val_path: "data/val_H_dim.npy"
+
+  # Case 2: SNWaveCatalog (h5)
+  h5_catalog_path: "./data/SNWaveformCatalog/GWDB4.h5"
+  
+  splits:
+    train: 0.70
+    val: 0.15
+    test: 0.15
+    
+  # Amount of data (applies to both static catalogs and online generation)
+  samples_per_split:
+    train: 500
+    val: 70
+    test: 70
+    
+  # Case 3: ccphen online generator
+  ccphen_params:
+    dist: 10000             # (10 kpc = 10000)
+    waveform_type: "standard" # Valid options: "standard", "sasi", "short"
+    base_seed: 42           
+  
+  # Noise injection parameters (shared across h5, npy, and ccphen)
+  snr_min: 150
+  snr_max: 200
+  noise_type: "ligo"  # Available options: "gaussian" or "ligo"
+  ligo_asd_path: "data/aLIGO_design_ASD.txt"
+
+model:
+  iterations: 8
+  num_filters: 200
+  kernel_size: 127
+  max_alpha: 2.0
+  max_beta: 1.5
+
+training:
+  epochs: 50
+  batch_size: 8
+  learning_rate: 5.0e-05  
+  lambda_reg: 0.001
+  clip_max_norm: 0.5
